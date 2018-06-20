@@ -12,7 +12,11 @@ class ChefsController < ApplicationController
       session[:user_id] = @chef.id
       redirect "/chefs/#{@chef.id}" #go to chef's page
     else
-      redirect '/signup' #redirect to signup page; possibly install Flash error?
+      redirect '/signup' #redirect to signup page; possibly install Flash error here?
     end
+
+  get '/login' do
+    erb :'/chefs/login'
+  end
   end
 end
