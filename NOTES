@@ -1,0 +1,33 @@
+Application that shows restaurants recommended by chefs in various cities. Chefs (users) can log in and submit restaurants they recommend in their own city.
+
+Models:
+CITY
+*Associations:
+- has_many :chefs
+- has_many :restaurants, through: chefs
+*Attributes:
+- :name
+
+CHEF (aka User)
+*Associations:
+- belongs_to :city
+- has_many :chefrestaurant
+- has many :restaurants, through :chefrestaurant
+*Attributes:
+- :name
+- :email
+- :password
+
+RESTAURANT:
+*Associations:
+- has_many :chefrestaurant
+- has_many :chefs, through: :chefrestaurant
+- belongs_to :city
+*Attributes:
+- name
+- cuisine
+
+CHEFRESTAURANT (join table):
+*Associations:
+- belongs_to :chef
+- belongs_to :restaurant
