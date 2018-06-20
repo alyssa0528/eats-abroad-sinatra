@@ -9,6 +9,7 @@ class ApplicationController < Sinatra::Base
     set :session_secret, "secret"
   end
 
+  #shows root (homepage; have links to sign up and log in)
   get "/" do
     erb :welcome
   end
