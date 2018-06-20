@@ -1,2 +1,7 @@
 class ChefsController < ApplicationController
-end 
+
+  #render signup form
+  get '/signup' do
+    erb ':/users/signup'
+  end
+end
