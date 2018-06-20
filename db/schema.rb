@@ -11,15 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180620183329) do
+ActiveRecord::Schema.define(version: 20180620200854) do
 
   create_table "chefs", force: :cascade do |t|
-    t.string  "name"
-    t.string  "email"
-    t.string  "password_digest"
-    t.integer "city_id"
-    t.string  "title"
-    t.string  "employer"
+    t.string "name"
+    t.string "email"
+    t.string "password_digest"
   end
 
   create_table "cities", force: :cascade do |t|
@@ -30,6 +27,7 @@ ActiveRecord::Schema.define(version: 20180620183329) do
     t.string  "name"
     t.string  "cuisine"
     t.integer "city_id"
+    t.text    "comments"
   end
 
 end
