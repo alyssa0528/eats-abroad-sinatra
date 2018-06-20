@@ -1,7 +1,10 @@
 class Chef < ActiveRecord::Base
   has_secure_password
-  
-  belongs_to :city
-  has_many :chefrestaurant
-  has_many :restaurants, through: :chefrestaurant
+
+  has_many :chefs_restaurants
+  has_many :restaurants, through: :chefs_restaurants
+
+  validates :email, presence: true
+  validates :email, uniqueness: true
+
 end
