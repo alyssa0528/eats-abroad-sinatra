@@ -1,0 +1,6 @@
+<h2><%=@restaurant.name%></h2>
+
+<%@restaurant.comments.each do |c|%>
+  <%=c.content%>
+  <br>
+<%end%>
