@@ -1,0 +1,9 @@
+<h2>Recommended Restaurants</h2>
+
+<% City.all.each do |c| %>
+    <h3><%= c.name %></h3> <!--Chicago -->
+  <% Restaurant.all.each do |r| %>
+    <% next if c.id != r.city_id %>
+      <p><%= r.name %></p>
+  <% end %>
+<% end %>
