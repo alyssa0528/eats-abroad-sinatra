@@ -1,2 +1,5 @@
 class RestaurantsController < ApplicationController
-end 
+  get '/restaurants' do
+    #show list of recommended restaurants 
+  end
+end
