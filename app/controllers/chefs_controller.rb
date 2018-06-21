@@ -24,7 +24,7 @@ class ChefsController < ApplicationController
     else
       redirect '/signup' #redirect to signup page; possibly install Flash error here?
     end
-  end 
+  end
 
   #when user logs in, a params hash with chef[email] and chef[password] attributes will be created
   post '/login' do
@@ -35,6 +35,15 @@ class ChefsController < ApplicationController
       redirect '/restaurants'
     else
       redirect '/login' #have error message appear, ask user to log in b/c previous submission was bad
+    end
+  end
+
+  get '/logout' do
+    if logged_in?
+      session.clear
+      redirect '/login'
+    else
+      redirect '/' 
     end
   end
 
