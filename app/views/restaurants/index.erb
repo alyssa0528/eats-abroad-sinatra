@@ -4,6 +4,6 @@
     <h3><%= c.name %></h3> <!--Chicago -->
   <% Restaurant.all.each do |r| %>
     <% next if c.id != r.city_id %>
-      <p><%= r.name %></p>
+      <p><a href="/restaurants/<%=r.id%>"><%= r.name %></a></p>
   <% end %>
 <% end %>
