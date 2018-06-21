@@ -3,8 +3,9 @@ class Chef < ActiveRecord::Base
 
   has_many :chefs_restaurants
   has_many :restaurants, through: :chefs_restaurants
+  has_many :comments
 
-  validates :name, presence: true 
+  validates :name, presence: true
   validates :email, presence: true
   validates :email, uniqueness: true
 
