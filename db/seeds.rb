@@ -1,7 +1,7 @@
-City.create(name: "Chicago")
-City.create(name: "Vancouver")
-City.create(name: "Boston")
-City.create(name: "Dublin")
+City.create(name: "Chicago") #id 1
+City.create(name: "Vancouver") #id 2
+City.create(name: "Boston") #id 3
+City.create(name: "Dublin") #id 4
 
 Chef.create(name: "Rick Bayless", email: "rick@bayless.com", password: "food") #id 1
 Chef.create(name: "Mindy Segal", email: "mindy@segal.com", password: "food") #id 2
