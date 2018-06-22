@@ -8,5 +8,5 @@ use Rack::MethodOverride
 
 use ChefsController
 use RestaurantsController
-use CitiesController
+use ModelsController
 run ApplicationController
