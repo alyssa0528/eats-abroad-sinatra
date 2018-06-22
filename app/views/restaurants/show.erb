@@ -5,6 +5,7 @@
 <h4>Chefs' Comments</h4>
 <%@restaurant.comments.each do |c|%>
   <%=c.content%>
+  <a href="/restaurants/<%=@restaurant.id%>/edit">Edit</a>
   <br>
 <%end%>
 

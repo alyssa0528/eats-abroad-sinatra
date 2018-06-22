@@ -36,7 +36,6 @@ class RestaurantsController < ApplicationController
       redirect "/restaurants/#{@restaurant.id}"
     end
   end
-
   #show individual restaurant page
   get '/restaurants/:id' do
     @restaurant = Restaurant.find_by(id: params[:id])
@@ -45,6 +44,21 @@ class RestaurantsController < ApplicationController
     else
       redirect '/login'
     end
+  end
+
+  #render restaurant edit form
+  get '/restaurants/:id/edit' do
+    @restaurant = Restaurant.find_by(id: params[:id])
+    @comment = Comment.find_by(restaurant_id: params[:id])
+    if logged_in?
+      erb :'/restaurants/edit'
+    else
+      redirect '/login'
+    end
+  end
+
+  patch '/restaurants/:id' do
+
   end
 
 end

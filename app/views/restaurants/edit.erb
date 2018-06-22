@@ -1,0 +1,15 @@
+<h2>Edit Your Comment for <%=@restaurant.name%></h2>
+<h4>Please note: a comment must be added!</h4>
+<form action="/restaurants/<%=@restaurant.id%>" method="POST">
+  <input type="hidden" id="hidden" name="_method" value="PATCH">
+  <label><h3>Comment: </h3></label>
+  <!-- out for now
+  <%@restaurant.comments.find do |c|%>
+    <%c.content if c.chef_id == current_user.id%>
+  <%end%>
+  -->
+</label><input type="textarea" name="comments[content][]" value="<%=@comment.content%>">
+  <input type="submit" name="" value="Submit">
+</form>
+
+<a href="/logout">Log Out</a>
