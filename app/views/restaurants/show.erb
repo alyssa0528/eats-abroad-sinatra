@@ -7,8 +7,8 @@
   <%=c.content%> – <%=c.chef.name%>
 
   <br>
-  <a href="/restaurants/<%=@restaurant.id%>/edit">Edit</a>
-  <form action="/restaurants/<%=@restaurant.id%>/delete" method="post">
+  <a href="/comments/<%=c.id%>/edit">Edit</a>
+  <form action="/comments/<%=c.id%>/delete" method="post">
     <input type="hidden" id="hidden" name="_method" value="DELETE">
     <input type="submit" value="Delete">
   </form>
