@@ -1,6 +1,7 @@
 class RestaurantsController < ApplicationController
+
+  #shows list of all recommended restaurants
   get '/restaurants' do
-    #show list of recommended restaurants
     if logged_in?
       erb :'/restaurants/index'
     else
@@ -8,7 +9,7 @@ class RestaurantsController < ApplicationController
     end
   end
 
-  #renders form to submit a new restaurant and comments
+  #renders form to submit a new restaurant and comment
   get '/restaurants/new' do
     if logged_in?
       erb :'/restaurants/new'
@@ -17,25 +18,29 @@ class RestaurantsController < ApplicationController
     end
   end
 
+  #adds new restaurant and comment
   post '/restaurants' do
-    #params will
-    #binding.pry
-    if params[:comments][:content].empty?
-      redirect '/restaurants/new' #error message here?
-    #  binding.pry
-  elsif params[:restaurant][:name].empty? #if a user selects an existing restaurant from the list
-      binding.pry
-      @restaurant = Restaurant.find_by(:id => params[:restaurant][:id])
-      #@restaurant.chefs << Chef.new(:name => current_user.name)
-      @restaurant.comments << Comment.new(:content => params[:comments][:content], :chef_id => current_user.id)
-      redirect "/restaurants/#{@restaurant.id}"
+    if logged_in?
+      if params[:restaurant].empty? && params[:comments].empty? #if user submits totally blank form
+        redirect '/restaurants/new' # error message asking chef to please select or add a restaurant
+      elsif params[:comments][:content].empty?
+        redirect '/restaurants/new' #error message here that comment field cannot be empty
+      elsif params[:restaurant][:name].empty? #if a user selects an existing restaurant from the list
+        @restaurant = Restaurant.find_by(:id => params[:restaurant][:id])
+        #@restaurant.chefs << Chef.new(:name => current_user.name)
+        @restaurant.comments << Comment.new(:content => params[:comments][:content], :chef_id => current_user.id)
+        redirect "/restaurants/#{@restaurant.id}"
+      else
+        @restaurant = Restaurant.new(params[:restaurant]) #if a brand new restaurant is added by user w/all inputs filled out
+        @restaurant.save #saves to database and creates a @restaurant ID
+        @restaurant.comments << Comment.new(:content => params[:comments][:content], :chef_id => current_user.id)
+        redirect "/restaurants/#{@restaurant.id}"
+      end
     else
-      @restaurant = Restaurant.new(params[:restaurant]) #if a brand new restaurant is added by user w/all inputs filled out
-      @restaurant.save #saves to database and creates a @restaurant ID
-      @restaurant.comments << Comment.new(:content => params[:comments][:content], :chef_id => current_user.id)
-      redirect "/restaurants/#{@restaurant.id}"
+      redirect '/login'
     end
   end
+
   #show individual restaurant page
   get '/restaurants/:id' do
     @restaurant = Restaurant.find_by(id: params[:id])
@@ -49,9 +54,18 @@ class RestaurantsController < ApplicationController
   #render restaurant edit form
   get '/restaurants/:id/edit' do
     @restaurant = Restaurant.find_by(id: params[:id])
-    @comment = Comment.find_by(restaurant_id: params[:id])
     if logged_in?
-      erb :'/restaurants/edit'
+      #@comment must be the particular comment to be edited
+      @comments = Comment.where(restaurant_id: params[:id]) #an array of comments
+      @comments.each do |comment| #iterate through array, check each comment to see if its user_id matches current_user.id
+        binding.pry
+        if comment.chef_id != current_user.id
+          redirect "/restaurants/#{@restaurant.id}" #have error message appear
+        else
+          @comment = comment
+          erb :'/restaurants/edit'
+        end
+      end
     else
       redirect '/login'
     end
@@ -61,12 +75,16 @@ class RestaurantsController < ApplicationController
   patch '/restaurants/:id' do
     @restaurant = Restaurant.find_by(id: params[:id])
     @comment = Comment.find_by(restaurant_id: params[:id])
-    if params[:comments][:content].empty?
-      erb :'/restaurants/edit' #raise error saying that a comment cannot be blank!
+    if logged_in? && @comment.chef_id == current_user.id
+      if params[:comments][:content].empty?
+        erb :'/restaurants/edit' #raise error saying that a comment cannot be blank!
+      else
+        @comment.content = params[:comments][:content]
+        @comment.save
+        redirect "/restaurants/#{@restaurant.id}"
+      end
     else
-      @comment.content = params[:comments][:content]
-      @comment.save
-      redirect "/restaurants/#{@restaurant.id}"
+      redirect "/restaurants/#{@restaurant.id}" #add error msg: you do not have permission to edit this comment
     end
   end
 
@@ -76,14 +94,11 @@ class RestaurantsController < ApplicationController
     @comment = Comment.find_by(restaurant_id: params[:id])
     binding.pry
     if logged_in? && current_user.id == @comment.chef_id
-
       @comment.delete
-
       redirect '/restaurants'
     else
       redirect "/restaurants/#{@restaurant.id}" #error message
     end
-
   end
 
 end
