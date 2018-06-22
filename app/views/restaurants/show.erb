@@ -1,10 +1,11 @@
 <h2><%=@restaurant.name%></h2>
 <h3>Cuisine: <%=@restaurant.cuisine%></h3>
-<!-- need location? -->
+
 <br>
 <h4>Chefs' Comments</h4>
 <%@restaurant.comments.each do |c|%>
-  <%=c.content%>
+  <%=c.content%> – <%=c.chef.name%>
+
   <br>
   <a href="/restaurants/<%=@restaurant.id%>/edit">Edit</a>
   <form action="/restaurants/<%=@restaurant.id%>/delete" method="post">
