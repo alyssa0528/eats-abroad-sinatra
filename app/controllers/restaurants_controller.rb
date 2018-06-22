@@ -57,8 +57,17 @@ class RestaurantsController < ApplicationController
     end
   end
 
+  #edit and update the comment
   patch '/restaurants/:id' do
-
+    @restaurant = Restaurant.find_by(id: params[:id])
+    @comment = Comment.find_by(restaurant_id: params[:id])
+    if params[:comments][:content].empty?
+      erb :'/restaurants/edit' #raise error saying that a comment cannot be blank!
+    else
+      @comment.content = params[:comments][:content]
+      @comment.save
+      redirect "/restaurants/#{@restaurant.id}"
+    end
   end
 
 end
