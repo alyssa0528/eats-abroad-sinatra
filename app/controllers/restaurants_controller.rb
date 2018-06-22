@@ -53,23 +53,48 @@ class RestaurantsController < ApplicationController
 
   #render restaurant edit form
   get '/restaurants/:id/edit' do
-    @restaurant = Restaurant.find_by(id: params[:id])
     if logged_in?
-      #@comment must be the particular comment to be edited
-      @comments = Comment.where(restaurant_id: params[:id]) #an array of comments
-      @comments.each do |comment| #iterate through array, check each comment to see if its user_id matches current_user.id
-        binding.pry
-        if comment.chef_id != current_user.id
-          redirect "/restaurants/#{@restaurant.id}" #have error message appear
-        else
-          @comment = comment
-          erb :'/restaurants/edit'
-        end
+      @restaurant = Restaurant.find_by(id: params[:id])
+      binding.pry
+      if @comment.chef_id == current_user.id
+        erb :'/restaurants/edit'
+      else
+        redirect "/restaurants/#{@restaurant.id}"
       end
+      #binding.pry
+      #if Comment.find_by(chef_id: current_user.id, restaurant_id: params[:id]) #if this is true
+      #  @comments = Comment.where(restaurant_id: params[:id])
+
+      #  @comments.each do |c|
+      #    binding.pry
+      #    c.user_id == current_user.id ? erb :'/restaurants/edit' : redirect "/restaurants/#{@restaurant.id}"
+      #    @comment = c
+      #  end
+        #if current_user
+
+        #else
+
+        #end
     else
       redirect '/login'
     end
   end
+
+
+
+  #    @comments = Comment.where(restaurant_id: params[:id]) #an array of comments
+  #    @comments.each do |comment| #iterate through array, check each comment to see if its user_id matches current_user.id
+  #      if comment.chef_id != current_user.id
+  #        redirect "/restaurants/#{@restaurant.id}" #have error message appear
+  #      else
+  #        @comment = comment
+  #        erb :'/restaurants/edit'
+  #      end
+  #    end
+  #  else
+  #    redirect '/login'
+  #  end
+  #end
 
   #edit and update the comment
   patch '/restaurants/:id' do
