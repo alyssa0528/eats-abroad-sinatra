@@ -5,7 +5,12 @@
 <h4>Chefs' Comments</h4>
 <%@restaurant.comments.each do |c|%>
   <%=c.content%>
+  <br>
   <a href="/restaurants/<%=@restaurant.id%>/edit">Edit</a>
+  <form action="/restaurants/<%=@restaurant.id%>/delete" method="post">
+    <input type="hidden" id="hidden" name="_method" value="DELETE">
+    <input type="submit" value="Delete">
+  </form>
   <br>
 <%end%>
 

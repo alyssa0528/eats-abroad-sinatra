@@ -70,4 +70,20 @@ class RestaurantsController < ApplicationController
     end
   end
 
+  #delete a comment
+  delete '/restaurants/:id/delete' do
+    @restaurant = Restaurant.find_by(id: params[:id])
+    @comment = Comment.find_by(restaurant_id: params[:id])
+    binding.pry
+    if logged_in? && current_user.id == @comment.chef_id
+
+      @comment.delete
+
+      redirect '/restaurants'
+    else
+      redirect "/restaurants/#{@restaurant.id}" #error message
+    end
+
+  end
+
 end
