@@ -4,7 +4,8 @@
 <br>
 <h4>Chefs' Comments</h4>
 <%@restaurant.comments.each do |c|%>
-  <%=c.content%> – <%=c.chef.name%>
+<%binding.pry%>
+  <%=c.content%> –<a href="/chefs/<%=c.chef_id%>"><%=c.chef.name%></a>
 
   <br>
   <a href="/comments/<%=c.id%>/edit">Edit</a>
@@ -15,4 +16,5 @@
   <br>
 <%end%>
 
-<a href="/logout">Log Out</a>
+<a href="/logout">Log Out</a><br>
+<a href="/restaurants">View All Restaurants</a>

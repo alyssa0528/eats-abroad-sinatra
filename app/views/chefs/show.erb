@@ -1,0 +1,4 @@
+<h2>Chef <%=@chef.name%>'s Favorite Restaurants</h2>
+<%@chef.restaurants.each do |r|%>
+  <a href="/restaurants/<%=r.id%>"><%=r.name%></a><br>
+<%end%>

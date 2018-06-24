@@ -51,4 +51,13 @@ class ChefsController < ApplicationController
     end
   end
 
+  get '/chefs/:id' do
+    if logged_in?
+      @chef = Chef.find(params[:id])
+      erb :'/chefs/show'
+    else
+      redirect '/login'
+    end
+  end
+
 end
