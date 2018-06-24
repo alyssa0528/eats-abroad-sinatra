@@ -4,7 +4,6 @@
 <br>
 <h4>Chefs' Comments</h4>
 <%@restaurant.comments.each do |c|%>
-<%binding.pry%>
   <%=c.content%> –<a href="/chefs/<%=c.chef_id%>"><%=c.chef.name%></a>
 
   <br>

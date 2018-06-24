@@ -1,5 +1,7 @@
 <h2>Recommended Restaurants</h2>
 
+<a href="/restaurants/new"><h3>Recommend One of These Restaurants or Add a New Restaurant</h3></a>
+
 <% City.all.each do |c| %>
     <h3><%= c.name %></h3> <!--Chicago -->
   <% Restaurant.all.each do |r| %>

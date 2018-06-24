@@ -1,0 +1,6 @@
+<h2>Chefs on Eats Abroad</h2>
+
+<% Chef.all.each do |c| %>
+  <a href="/chefs/<%=c.id%>"><%= c.name %></a>
+  <br>
+<% end %>

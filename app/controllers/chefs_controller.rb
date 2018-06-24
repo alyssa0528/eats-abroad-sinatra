@@ -51,6 +51,16 @@ class ChefsController < ApplicationController
     end
   end
 
+  #show list of all chefs in database
+  get '/chefs' do
+    if logged_in?
+      erb :'/chefs/index'
+    else
+      redirect '/login'
+    end 
+  end
+
+  #show individual chef's favorite restaurants
   get '/chefs/:id' do
     if logged_in?
       @chef = Chef.find(params[:id])
