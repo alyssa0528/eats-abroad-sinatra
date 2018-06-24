@@ -1,3 +1,7 @@
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
+
 <h2><%=@restaurant.name%></h2>
 <h3>Cuisine: <%=@restaurant.cuisine%></h3>
 
