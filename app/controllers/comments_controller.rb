@@ -21,8 +21,6 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     @restaurant = @comment.restaurant
 
-    binding.pry
-
     if logged_in?
       if @comment.chef_id == current_user.id
         if params[:comments][:content].empty? #if the submitted comment is blank
@@ -41,15 +39,20 @@ class CommentsController < ApplicationController
   end
 
   #delete a comment
-  delete '/restaurants/:id/delete' do
-    @restaurant = Restaurant.find_by(id: params[:id])
-    @comment = Comment.find_by(restaurant_id: params[:id])
-    binding.pry
-    if logged_in? && current_user.id == @comment.chef_id
-      @comment.delete
-      redirect '/restaurants'
+  delete '/comments/:id/delete' do
+    @comment = Comment.find(params[:id])
+    @restaurant = @comment.restaurant
+
+    #binding.pry
+    if logged_in?
+      if current_user.id == @comment.chef_id
+        @comment.delete
+        redirect "/restaurants/#{@restaurant.id}" #maybe raise message saying your comment has been successfully deleted?
+      else
+        redirect "/restaurants/#{@restaurant.id}" #error message saying you don't have permission to delete this comment
+      end
     else
-      redirect "/restaurants/#{@restaurant.id}" #error message
+      redirect '/login'
     end
   end
 
