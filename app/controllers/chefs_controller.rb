@@ -2,7 +2,11 @@ class ChefsController < ApplicationController
 
   #render signup form
   get '/signup' do
-    erb :'/chefs/signup'
+    if !logged_in?
+      erb :'/chefs/signup'
+    else
+      redirect '/restaurants' #error message: you are already logged in
+    end
   end
 
   #render login page, but only if chef is not already logged in
@@ -43,7 +47,7 @@ class ChefsController < ApplicationController
       session.clear
       redirect '/login'
     else
-      redirect '/' 
+      redirect '/'
     end
   end
 
