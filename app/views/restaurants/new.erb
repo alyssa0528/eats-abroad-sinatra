@@ -4,7 +4,7 @@
 
 <h2>Add a New Restaurant to Your Recommendations</h2>
 
-<h3>Choose an Existing Restaurant from the Database</h3>
+<h3>Step 1a. Choose an Existing Restaurant from the Database</h3>
 <!-- checkboxes for existing restaurants appear here -->
 <form action="/restaurants" method="POST">
 <% City.all.each do |c| %>
@@ -15,14 +15,15 @@
   <% end %><br>
 <% end %>
 
-<h3>Or Add a New Restaurant to the Database</h3>
+<h3>Step 1b: Or Add a New Restaurant to the Database</h3>
   <label>Name: </label><input type="text" name="restaurant[name]" value=""><br>
   <label>Cuisine: </label><input type="text" name="restaurant[cuisine]" value=""><br>
   <label>City: </label>
   <% City.all.each do |c| %>
-    <input type="radio" name="restaurant[city_id]" id="<%=c.id%>" value="<%=c.id%>"><%= c.name %><br>
+    <br><input type="radio" name="restaurant[city_id]" id="<%=c.id%>" value="<%=c.id%>"><%= c.name %>
   <% end %><br>
-  <label><h3>Comments: </h3></label><input type="textarea" name="comments[content]" value="">
+  <br>
+  <h3>Step 2: Add a Comment: </h3></label><input type="textarea" name="comments[content]" value="">
   <input type="submit" name="" value="Submit">
 </form>
 
