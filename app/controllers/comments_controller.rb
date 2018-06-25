@@ -13,7 +13,7 @@ use Rack::Flash
         erb :'/comments/edit'
       else
         flash[:message] = "**Sorry, you do not have permission to edit this comment.**"
-        redirect "/restaurants/#{@restaurant.id}" #raise error saying user doesn't have permission to edit
+        redirect "/restaurants/#{@restaurant.id}"
       end
     else
       redirect '/login'
@@ -27,18 +27,18 @@ use Rack::Flash
 
     if logged_in?
       if @comment.chef_id == current_user.id
-        if params[:comments][:content].empty? #if the submitted comment is blank
+        if params[:comments][:content].empty?
           flash[:message] = "**The comment field cannot be blank.**"
-          erb :'/comments/edit' #raise error saying that a comment cannot be blank!
+          erb :'/comments/edit'
         else
-          @comment.content = params[:comments][:content] #update @comment's content value with the new comment
-          @comment.save #save to db
+          @comment.content = params[:comments][:content]
+          @comment.save
           flash[:message] = "**Comment successfully updated.**"
-          redirect "/restaurants/#{@restaurant.id}" #redirect to restaurant's page
+          redirect "/restaurants/#{@restaurant.id}"
         end
       else
         flash[:message] = "**Sorry, you do not have permission to edit this comment.**"
-        redirect "/restaurants/#{@restaurant.id}" #raise error saying user doesn't have permission to edit
+        redirect "/restaurants/#{@restaurant.id}"
       end
     else
       redirect '/login'
@@ -50,15 +50,14 @@ use Rack::Flash
     @comment = Comment.find(params[:id])
     @restaurant = @comment.restaurant
 
-    #binding.pry
     if logged_in?
       if current_user.id == @comment.chef_id
         @comment.delete
         flash[:message] = "**Comment successfully deleted.**"
-        redirect "/restaurants/#{@restaurant.id}" #maybe raise message saying your comment has been successfully deleted?
+        redirect "/restaurants/#{@restaurant.id}"
       else
         flash[:message] = "**Sorry, you do not have permission to delete this comment.**"
-        redirect "/restaurants/#{@restaurant.id}" #error message saying you don't have permission to delete this comment
+        redirect "/restaurants/#{@restaurant.id}" 
       end
     else
       redirect '/login'

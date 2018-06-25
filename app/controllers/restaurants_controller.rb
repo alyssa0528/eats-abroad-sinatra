@@ -25,20 +25,20 @@ class RestaurantsController < ApplicationController
   #adds new restaurant and comment
   post '/restaurants' do
     if logged_in?
-      if params[:restaurant].empty? && params[:comments].empty? #if user submits totally blank form
+      if params[:restaurant].empty? && params[:comments].empty?
         flash[:message] = "**Please select a restaurant from the list below or add a new one.**"
-        redirect '/restaurants/new' # error message asking chef to please select or add a restaurant
+        redirect '/restaurants/new'
       elsif params[:comments][:content].empty?
         flash[:message] = "**You must enter a comment.**"
-        redirect '/restaurants/new' #error message here that comment field cannot be empty
-      elsif params[:restaurant][:name].empty? #if a user selects an existing restaurant from the list
+        redirect '/restaurants/new'
+      elsif params[:restaurant][:name].empty?
         @restaurant = Restaurant.find_by(:id => params[:restaurant][:id])
         @restaurant.comments << Comment.new(:content => params[:comments][:content], :chef_id => current_user.id)
         flash[:message] = "**Restaurant successfully added to your list.**"
         redirect "/restaurants/#{@restaurant.id}"
       else
-        @restaurant = Restaurant.new(params[:restaurant]) #if a brand new restaurant is added by user w/all inputs filled out
-        @restaurant.save #saves to database and creates a @restaurant ID
+        @restaurant = Restaurant.new(params[:restaurant])
+        @restaurant.save 
         @restaurant.comments << Comment.new(:content => params[:comments][:content], :chef_id => current_user.id)
         flash[:message] = "**Restaurant successfully added to your list.**"
         redirect "/restaurants/#{@restaurant.id}"
