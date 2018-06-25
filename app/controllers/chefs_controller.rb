@@ -1,11 +1,16 @@
+require 'sinatra/base'
+require 'rack-flash'
+
 class ChefsController < ApplicationController
+use Rack::Flash
 
   #render signup form
   get '/signup' do
     if !logged_in?
       erb :'/chefs/signup'
     else
-      redirect '/restaurants' #error message: you are already logged in
+      flash[:message] = "**You are already logged in.**"
+      redirect '/restaurants'
     end
   end
 
@@ -14,31 +19,37 @@ class ChefsController < ApplicationController
     if !logged_in?
       erb :'/chefs/login'
     else
+      flash[:message] = "**You are already logged in.**"
       redirect '/restaurants'
     end
   end
 
   #creates new Chef (user)
   post '/signup' do
-    #binding.pry
     @chef = Chef.new(params[:chef])
     if @chef.save #this would mean all the validations are true
       session[:user_id] = @chef.id
-      redirect "/restaurants" #go to page that lists all recommended restaurants
-    else
-      redirect '/signup' #redirect to signup page; possibly install Flash error here?
+      redirect "/restaurants"
+    elsif
+      Chef.all.find do |chef|
+        chef.email == @chef.email
+      end
+      flash[:message] = "**Email address already registered with Eats Abroad. Please sign in, or create an account with a different email address."
+      redirect '/signup'
+    elsif !@chef.save
+      flash[:message] = "**Please confirm all fields are completed before submitting.**"
+      redirect '/signup'
     end
   end
 
-  #when user logs in, a params hash with chef[email] and chef[password] attributes will be created
   post '/login' do
-    chef = Chef.find_by(:email => params[:chef][:email]) #if submitted email isn't found, nil will be returned
-    #need to also confirm password (authenticate)
-    if chef && chef.authenticate(params[:chef][:password]) #if chef is not nil, and submitted password is authenticated
-      session[:user_id] = chef.id #will log chef in successfully
+    chef = Chef.find_by(:email => params[:chef][:email])
+    if chef && chef.authenticate(params[:chef][:password]) 
+      session[:user_id] = chef.id
       redirect '/restaurants'
     else
-      redirect '/login' #have error message appear, ask user to log in b/c previous submission was bad
+      flash[:message] = "**Log-in credentials incorrect. Please try again.**"
+      redirect '/login'
     end
   end
 
@@ -57,7 +68,7 @@ class ChefsController < ApplicationController
       erb :'/chefs/index'
     else
       redirect '/login'
-    end 
+    end
   end
 
   #show individual chef's favorite restaurants

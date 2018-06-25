@@ -1,3 +1,7 @@
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
+
 <h2>Welcome, <a href="/chefs/<%=current_user.id%>"><%=current_user.name%></a></h2>
 
 <h2>Recommended Restaurants on Eats Abroad</h2>
