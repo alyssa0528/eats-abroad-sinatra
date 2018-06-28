@@ -1,6 +1,4 @@
-<% if flash.has?(:message) %>
-  <%= flash[:message] %>
-<% end %>
+
 
 <h2>Add a New Restaurant to Your Recommendations</h2>
 
@@ -11,7 +9,7 @@
     <h5><%= c.name %></h5>
   <% Restaurant.all.each do |r| %>
     <% next if c.id != r.city_id %>
-     <input type="radio" name="restaurant[id]" id="<%=r.id%>" value="<%=r.id%>"><%= r.name %><br>
+     <input type="radio" name="restaurant_id" id="<%=r.id%>" value="<%=r.id%>"><%= r.name %><br>
   <% end %><br>
 <% end %>
 
