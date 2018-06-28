@@ -25,20 +25,25 @@ class RestaurantsController < ApplicationController
   #adds new restaurant and comment
   post '/restaurants' do
     if logged_in?
-      if params[:restaurant].empty? && params[:comments].empty?
+      #binding.pry
+      if params[:restaurant].empty? && params[:comments].empty? && params[:restaurant_id].empty? #if nothing is selected
         flash[:message] = "**Please select a restaurant from the list below or add a new one.**"
         redirect '/restaurants/new'
-      elsif params[:comments][:content].empty?
+      elsif params[:comments][:content].empty? # if no comment is entered
         flash[:message] = "**You must enter a comment.**"
         redirect '/restaurants/new'
-      elsif params[:restaurant][:name].empty?
-        @restaurant = Restaurant.find_by(:id => params[:restaurant][:id])
+      elsif params[:restaurant][:name].empty? #if an existing is chosen
+        @restaurant = Restaurant.find_by(:id => params[:restaurant_id])
+        #@restaurant.comments.build(:content => params[:comments][:content], :chef_id => current_user.id)
         @restaurant.comments << Comment.new(:content => params[:comments][:content], :chef_id => current_user.id)
         flash[:message] = "**Restaurant successfully added to your list.**"
         redirect "/restaurants/#{@restaurant.id}"
-      else
+      elsif params[:restaurant][:cuisine].empty? || params[:restaurant][:city_id].empty?
+        flash[:message] = "**You must enter all fields.**"
+        redirect '/restaurants/new'
+      else #for brand new restaurant
         @restaurant = Restaurant.new(params[:restaurant])
-        @restaurant.save 
+        @restaurant.save
         @restaurant.comments << Comment.new(:content => params[:comments][:content], :chef_id => current_user.id)
         flash[:message] = "**Restaurant successfully added to your list.**"
         redirect "/restaurants/#{@restaurant.id}"
